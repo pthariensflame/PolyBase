@@ -1,4 +1,4 @@
-{-# LANGUAGE PolyKinds, TypeOperators, KindSignatures, ScopedTypeVariables, GADTs, TypeFamilies #-}
+{-# LANGUAGE PolyKinds, TypeOperators, KindSignatures, ScopedTypeVariables, GADTs, TypeFamilies, FlexibleContexts #-}
 module PolyBase.Functor (Functor(..),
                          contramap) where
 import Prelude hiding ((.), id, Functor(..))

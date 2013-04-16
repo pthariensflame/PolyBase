@@ -1,7 +1,7 @@
 {-# LANGUAGE PolyKinds, TypeOperators, KindSignatures, ScopedTypeVariables, RankNTypes, GADTs #-}
-module PolyBase.Category (Indexed(..),
-                          (:->),
-                          (:=)(..)) where
+module PolyBase.Indexed (Indexed(..),
+                         (:->),
+                         (:=)(..)) where
 import Prelude hiding ((.), id)
 import PolyBase.Category
 

@@ -1,4 +1,4 @@
-{-# LANGUAGE PolyKinds, TypeOperators, KindSignatures, ScopedTypeVariables, RankNTypes, GADTs #-}
+{-# LANGUAGE PolyKinds, TypeOperators, KindSignatures, ScopedTypeVariables, GADTs #-}
 module PolyBase.Category (Category(..),
                           (:~)(..),
                           Op(..)) where
@@ -20,5 +20,4 @@ instance Category (:~) where
   Refl . Refl = Refl
   id = Refl
 
-data Op :: (k -> k -> *) -> k -> k -> * where
-  Op :: forall (cat :: k -> k -> *) (a :: k) (b :: k). { getCat :: cat b a } -> Op cat a b
+newtype Op (cat :: k -> k -> *) (a :: k) (b :: k) = Op { runOp :: cat b a }
