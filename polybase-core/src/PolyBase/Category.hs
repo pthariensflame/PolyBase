@@ -22,5 +22,3 @@ instance Category (:~) where
 
 data Op :: (k -> k -> *) -> k -> k -> * where
   Op :: forall (cat :: k -> k -> *) (a :: k) (b :: k). { getCat :: cat b a } -> Op cat a b
-
-
