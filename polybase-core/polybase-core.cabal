@@ -14,8 +14,8 @@ cabal-version:       >= 1.8
 library
   exposed-modules:     PolyBase.Category,
                        PolyBase.Functor,
-                       PolyBase.Indexed,
-                       PolyBase.Monad
+                       PolyBase.Indexed
+                       --PolyBase.Monad
   -- other-modules:       
   build-depends:       base
   hs-source-dirs:      src
