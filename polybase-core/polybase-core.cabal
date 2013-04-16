@@ -1,0 +1,21 @@
+name:                polybase-core
+version:             0.0.0.0
+synopsis:            Core classes for the PolyBase system
+-- description:         
+license:             BSD3
+license-file:        LICENSE
+author:              Alexander Altman
+maintainer:          alexanderaltman@me.com
+-- copyright:           
+category:            Types
+build-type:          Simple
+cabal-version:       >= 1.8
+
+library
+  exposed-modules:     PolyBase.Category,
+                       PolyBase.Functor,
+                       PolyBase.Indexed,
+                       PolyBase.Monad
+  -- other-modules:       
+  build-depends:       base
+  hs-source-dirs:      src
