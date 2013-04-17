@@ -37,7 +37,7 @@ class (Category cat) => HasProduct (cat :: k -> k -> *) where
   snd = fst . swap
   swap :: forall (prod :: k -> k -> k) (a :: k) (b :: k). (prod ~ Product cat) => cat (prod a b) (prod b a)
 
--- | Product = (,)
+-- | 'Product' = @(,)@
 instance HasProduct (->) where
   type Product (->) = (,)
   fst = P.fst
@@ -51,7 +51,7 @@ class (HasProduct cat) => HasUnit (cat :: k -> k -> *) where
   unitR :: forall (prod :: k -> k -> k) (unit :: k) (a :: k). (prod ~ Product cat, unit ~ Unit cat) => cat a (prod a unit)
   unitR = swap . unitL
 
--- | Unit = ()
+-- | 'Unit' = @()@
 instance HasUnit (->) where
   type Unit (->) = ()
   unitL v = ((), v)
