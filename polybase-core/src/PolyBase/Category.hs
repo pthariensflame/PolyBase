@@ -21,3 +21,7 @@ instance Category (:~) where
   id = Refl
 
 newtype Op (cat :: k -> k -> *) (a :: k) (b :: k) = Op { runOp :: cat b a }
+
+instance (Category cat) => Category (Op cat) where
+  Op x . Op y = Op (y . x)
+  id = Op id
