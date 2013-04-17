@@ -15,4 +15,4 @@ instance (Category cat) => Category (Indexed (cat :: k -> k -> *) :: (ki -> k) -
     id = Indexed id
 
 data (:=) :: * -> ki -> ki -> * where
-    AtKey :: forall (a :: *) (i :: ki). { getAtKey :: a } -> (a := i) i
+    AtKey :: forall (v :: *) (i :: ki). { getAtKey :: v } -> (v := i) i
