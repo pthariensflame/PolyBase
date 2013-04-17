@@ -27,4 +27,5 @@ instance (Monad m) => Category (Kleisli (m :: k -> k) :: k -> k -> *) where
   id = Kleisli point
 
 instance (Functor m) => Functor (Kleisli (m :: k -> k) (a :: k) :: k -> *) where
-  type FunctorC1
+  type FunctorC1 (Kleisli m a) = (FunctorC1 m :: k -> k -> *)
+  type FunctorC2 (Kleisli m a) = ((->) :: * -> * -> *)
