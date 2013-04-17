@@ -15,7 +15,7 @@ library
   exposed-modules:     PolyBase.Category,
                        PolyBase.Functor,
                        PolyBase.Indexed
-                       --PolyBase.Monad
+                       PolyBase.Monad
   -- other-modules:       
   build-depends:       base
   hs-source-dirs:      src
