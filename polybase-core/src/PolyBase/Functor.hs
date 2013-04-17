@@ -43,15 +43,15 @@ instance Functor ((:=) (v :: *) :: ki -> ki -> *) where
   type FunctorC1 ((:=) v) = ((:~) :: ki -> ki -> *)
   type FunctorC2 ((:=) v) = ((:->) :: (ki -> *) -> (ki -> *) -> *)
   fmap Refl = id
-{-
+
 -- | 'FunctorC1' = ':~'
 --   
 --   'FunctorC2' = 'Indexed' (':->')
 instance Functor ((:=) :: * -> ki -> ki -> *) where
-  type FunctorC1 (:=) = ((->) :: * -> * -> *)
+  type FunctorC1 (:=) = ((:~) :: ki -> ki -> *)
   type FunctorC2 (:=) = (Indexed (:->) :: (ki -> ki -> *) -> (ki -> ki -> *) -> *)
   fmap f = Indexed (Indexed (\(AtKey x) -> AtKey (f x)))
--}
+
 -- | 'FunctorC1' = @->@
 --   
 --   'FunctorC2' = @->@
