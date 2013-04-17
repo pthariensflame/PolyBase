@@ -1,4 +1,4 @@
-{-# LANGUAGE PolyKinds, TypeOperators, KindSignatures, ScopedTypeVariables, GADTs, TypeFamilies #-}
+{-# LANGUAGE PolyKinds, TypeOperators, KindSignatures, ScopedTypeVariables, GADTs, TypeFamilies, UndecidableInstances #-}
 module PolyBase.Monad (Pointed(..){-,
                        Apply(..),
                        Applicative(..)-},
@@ -7,6 +7,7 @@ module PolyBase.Monad (Pointed(..){-,
                        Kleisli(..)) where
 import Prelude hiding ((.), id, Functor(..), Monad(..), (=<<))
 import PolyBase.Category
+import PolyBase.Indexed
 import PolyBase.Functor
 
 class (Functor f, FunctorC1 f ~ FunctorC2 f) => Pointed (f :: k -> k) where
@@ -26,6 +27,12 @@ instance (Monad m) => Category (Kleisli (m :: k -> k) :: k -> k -> *) where
   Kleisli f . Kleisli g = Kleisli ((=<<) f . g)
   id = Kleisli point
 
-instance (Functor m) => Functor (Kleisli (m :: k -> k) (a :: k) :: k -> *) where
+instance (Functor m, FunctorC1 m ~ FunctorC2 m) => Functor (Kleisli (m :: k -> k) (a :: k) :: k -> *) where
   type FunctorC1 (Kleisli m a) = (FunctorC1 m :: k -> k -> *)
   type FunctorC2 (Kleisli m a) = ((->) :: * -> * -> *)
+  fmap f (Kleisli g) = Kleisli (fmap f . g)
+
+instance (Functor m, FunctorC1 m ~ FunctorC2 m) => Functor (Kleisli (m :: k -> k) :: k -> k -> *) where
+  type FunctorC1 (Kleisli m) = (Op (FunctorC1 m) :: k -> k -> *)
+  type FunctorC2 (Kleisli m) = ((:->) :: (k -> *) -> (k -> *) -> *)
+  fmap (Op f) = Indexed (\(Kleisli g) -> Kleisli (g . f))

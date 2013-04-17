@@ -1,7 +1,8 @@
 {-# LANGUAGE PolyKinds, TypeOperators, KindSignatures, ScopedTypeVariables, GADTs #-}
 module PolyBase.Category (Category(..),
                           (:~)(..),
-                          Op(..)) where
+                          Op(..),
+                          HasProducts(..)) where
 import Prelude hiding ((.), id)
 import qualified Prelude as P
 
@@ -25,3 +26,8 @@ newtype Op (cat :: k -> k -> *) (a :: k) (b :: k) = Op { runOp :: cat b a }
 instance (Category cat) => Category (Op cat) where
   Op x . Op y = Op (y . x)
   id = Op id
+
+class (Category cat) => HasProducts (cat :: k -> k -> *) where
+  type Product cat :: k -> k -> k
+  type Unit cat :: k
+  fst :: cat

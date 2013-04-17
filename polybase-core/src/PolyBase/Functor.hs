@@ -76,3 +76,5 @@ contramap' = runOp . fmap
 
 fmap' :: forall (f :: k1 -> k2) (a :: k1) (b :: k1) (cat1 :: k1 -> k1 -> *) (cat2 :: k2 -> k2 -> *). (Functor f, Op cat1 ~ FunctorC1 f, Op cat2 ~ FunctorC2 f) => cat1 b a -> cat2 (f b) (f a)
 fmap' = runOp . fmap . Op
+
+
