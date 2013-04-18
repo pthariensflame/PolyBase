@@ -5,8 +5,7 @@ module PolyBase.Indexed (Indexed(..),
 import Prelude hiding ((.), id)
 import PolyBase.Category
 
-data Indexed :: (k -> k -> *) -> (ki -> k) -> (ki -> k) -> * where
-  Indexed :: forall (cat :: k -> k -> *) (a :: ki -> k) (b :: ki -> k). { runIndexed :: forall (i :: ki). cat (a i) (b i) } -> Indexed cat a b
+newtype Indexed (cat :: k -> k -> *) (a :: ki -> k) (b :: ki -> k) = Indexed { runIndexed :: forall (i :: ki). cat (a i) (b i) }
 
 type (:->) = (Indexed (->) :: (ki -> *) -> (ki -> *) -> *)
 

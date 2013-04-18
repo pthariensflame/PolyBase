@@ -1,8 +1,9 @@
-{-# LANGUAGE PolyKinds, TypeOperators, KindSignatures, ScopedTypeVariables, GADTs, TypeFamilies, FlexibleContexts #-}
+{-# LANGUAGE PolyKinds, TypeOperators, KindSignatures, ScopedTypeVariables, GADTs, TypeFamilies, FlexibleContexts, RankNTypes #-}
 module PolyBase.Functor (Functor(..),
                          contramap,
                          contramap',
-                         fmap') where
+                         fmap',
+                         imap) where
 import Prelude hiding ((.), id, Functor(..))
 import PolyBase.Category
 import PolyBase.Indexed
@@ -11,6 +12,18 @@ class (Category (FunctorC1 f), Category (FunctorC2 f)) => Functor (f :: k1 -> k2
   type FunctorC1 f :: k1 -> k1 -> *
   type FunctorC2 f :: k2 -> k2 -> *
   fmap :: forall (a :: k1) (b :: k1) (cat1 :: k1 -> k1 -> *) (cat2 :: k2 -> k2 -> *). (cat1 ~ FunctorC1 f, cat2 ~ FunctorC2 f) => cat1 a b -> cat2 (f a) (f b)
+
+contramap :: forall (f :: k1 -> k2) (a :: k1) (b :: k1) (cat1 :: k1 -> k1 -> *) (cat2 :: k2 -> k2 -> *). (Functor f, Op cat1 ~ FunctorC1 f, cat2 ~ FunctorC2 f) => cat1 b a -> cat2 (f a) (f b)
+contramap = fmap . Op
+
+contramap' :: forall (f :: k1 -> k2) (a :: k1) (b :: k1) (cat1 :: k1 -> k1 -> *) (cat2 :: k2 -> k2 -> *). (Functor f, cat1 ~ FunctorC1 f, Op cat2 ~ FunctorC2 f) => cat1 a b -> cat2 (f b) (f a)
+contramap' = runOp . fmap
+
+fmap' :: forall (f :: k1 -> k2) (a :: k1) (b :: k1) (cat1 :: k1 -> k1 -> *) (cat2 :: k2 -> k2 -> *). (Functor f, Op cat1 ~ FunctorC1 f, Op cat2 ~ FunctorC2 f) => cat1 b a -> cat2 (f b) (f a)
+fmap' = runOp . fmap . Op
+
+imap :: forall (f :: (ki -> k1) -> k2) (a :: ki -> k1) (b :: ki -> k1) (cat1 :: k1 -> k1 -> *) (cat2 :: k2 -> k2 -> *). (Functor f, (Indexed cat1 :: (ki -> k1) -> (ki -> k1) -> *) ~ FunctorC1 f, cat2 ~ FunctorC2 f) => (forall (i :: ki). cat1 (a i) (b i)) -> cat2 (f a) (f b)
+imap = fmap . Indexed
 
 -- | 'FunctorC1' = ':~'
 --   
@@ -67,12 +80,3 @@ instance Functor ((->) :: * -> * -> *) where
   type FunctorC1 (->) = Op (->)
   type FunctorC2 (->) = (:->)
   fmap (Op f) = Indexed (\g -> g . f)
-
-contramap :: forall (f :: k1 -> k2) (a :: k1) (b :: k1) (cat1 :: k1 -> k1 -> *) (cat2 :: k2 -> k2 -> *). (Functor f, Op cat1 ~ FunctorC1 f, cat2 ~ FunctorC2 f) => cat1 b a -> cat2 (f a) (f b)
-contramap = fmap . Op
-
-contramap' :: forall (f :: k1 -> k2) (a :: k1) (b :: k1) (cat1 :: k1 -> k1 -> *) (cat2 :: k2 -> k2 -> *). (Functor f, cat1 ~ FunctorC1 f, Op cat2 ~ FunctorC2 f) => cat1 a b -> cat2 (f b) (f a)
-contramap' = runOp . fmap
-
-fmap' :: forall (f :: k1 -> k2) (a :: k1) (b :: k1) (cat1 :: k1 -> k1 -> *) (cat2 :: k2 -> k2 -> *). (Functor f, Op cat1 ~ FunctorC1 f, Op cat2 ~ FunctorC2 f) => cat1 b a -> cat2 (f b) (f a)
-fmap' = runOp . fmap . Op
